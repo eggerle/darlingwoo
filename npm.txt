@@ -73,15 +73,8 @@ react-native bundle --entry-file index.js --bundle-output ./bundles/android/main
 
 -------------git-----------------------
 git rebase
-git push origin HEAD:refs/for/spacemaster%r=username
-git push origin HEAD:refs/for/spacemaster%r=username
+git push origin HEAD:refs/for/branchname%r=username
 
-git push origin HEAD:refs/for/moa-20180825%r=username
-
-git push origin HEAD:refs/for/release-new%r=username
-
-//推送到ios
-git push origin HEAD:refs/for/master%r=username
 
 想看到最近一次提交所有更改过的文件
 对应命令 git log -n 1 --stat
