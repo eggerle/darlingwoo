@@ -1,0 +1,172 @@
+
+-------------apk安装-----------------------
+包卸载不干净导致无法安装
+adb uninstall +包名 
+再adb install -r +apk
+
+-------------npm-----------------------
+
+卸载第三方包
+npm uninstall --save react-native-video，
+
+安装指定版本
+npm install --save-dev react-router@2.8.1
+
+升级
+ npm update 
+ 
+重装react-native
+npm uninstall -g react-native-cli
+npm install react-native@0.55.4
+npm install -g react-native-cli@1.2.0
+
+更新全局包：
+npm update <name> -g
+
+更新生产环境依赖包：
+npm update <name> --save
+
+更新开发环境依赖包：
+npm update <name> --save-dev
+
+npm install 【插件名】或 npm install 【插件名】--save 归属dependencies，表示代码运行时所需要的包。
+
+npm install 【插件名】--save-dev 归属 devDependencies，表示开发时依赖的插件（即不会打包至线上）
+
+//查询指定包的所有版本
+>npm view PackageName versions
+最新的版本是哪一个
+npm view PackageName version
+查询所有版本的信息
+npm info PackageName
+
+
+树形结构列出当前项目安装的所有模块，以及它们依赖的模块。
+npm list
+
+查看本地安装的jQuery
+npm ls jquery 
+查看全局安装的jquery
+npm ls jquery -g    (查看全局安装的jquery)
+
+
+  if(mUploadFileList.size() == 0){
+                            searchContactInfo();
+                        }
+
+						
+
+ios
+react-native bundle --entry-file index.ios.js --bundle-output ./ios/bundle/main.jsbundle --platform ios --assets-dest ./ios/bundle --dev false
+
+android
+react-native bundle --entry-file index.android.js --bundle-output ./assets/index.android.bundle --platform android --assets-dest ./assets --dev false
+
+react-native bundle --entry-file index.js --bundle-output ./assets/index.android.empbi.bundle --platform android --assets-dest ./assets --dev false
+
+-----------新版打包指令----------
+ios
+react-native bundle --entry-file index.js --bundle-output ./bundles/ios/main.jsbundle --platform ios --assets-dest ./bundles/ios --dev false
+android
+react-native bundle --entry-file index.js --bundle-output ./bundles/android/main.jsbundle --platform android --assets-dest ./bundles/android --dev false
+	
+
+-------------git-----------------------
+git rebase
+git push origin HEAD:refs/for/spacemaster%r=username
+git push origin HEAD:refs/for/spacemaster%r=username
+
+git push origin HEAD:refs/for/moa-20180825%r=username
+
+git push origin HEAD:refs/for/release-new%r=username
+
+//推送到ios
+git push origin HEAD:refs/for/master%r=username
+
+想看到最近一次提交所有更改过的文件
+对应命令 git log -n 1 --stat
+
+git 退出merging
+// 撤销merge  
+$ git reset --hard HEAD (or sha_1) 
+
+//删除本地分支
+git branch -d br
+
+//切换远程分支
+git checkout -b localName origin/远程分支
+
+//以一行的形式显示log的title
+git log --oneline
+
+// 查看某次提交进行了哪些修改
+git log -p 可以依次查看提交时，进行了哪些修改，如果需要看某次commit的修改，后面只需要跟上对应的commit id即可
+
+//使用git reset –hard 还原到某一次提交
+git reset --hard commitID
+
+//Git合并某个分支的一个commit到另一个分支
+例如要将A分支的一个commit合并到B分支：
+首先切换到A分支
+git checkout A
+git log
+找出要合并的commit ID :
+例如
+0128660c08e325d410cb845616af355c0c19c6fe
+然后切换到B分支上
+git checkout B
+git cherry-pick 0128660c08e325d410cb845616af355c0c19c6fe
+
+然后就将A分支的某个commit合并到了B分支了
+--------------------- 
+
+
+--------------查询------------
+全局查找中文
+^((?!(\*|//)).)+[\u4e00-\u9fa5]
+
+
+
+-------------adb截图------------------------
+（1）adb shell screencap -p /sdcard/screen.png
+
+（2）adb pull /sdcard/screen.png
+
+（1）是截图保存到sd卡；
+
+（2）是将screen.png保存到计算机上；保存的路径为你使用adb命令时的当前目录，当然你也可以在最后加入你想存放的路径名
+------------------------------------------- 
+
+
+-------------关于echarts打release包错误问题解决------------------------
+打release包的时候报错了， 
+\android\app\src\main\res\drawable-mdpi\node_modules_nativeecharts_src_components_echarts_tpl.html 
+Error:Error: The file name must end with .xml or .png
+
+原因： 
+release打包的时候把node_modules_nativeecharts_src_components_echarts_tpl.html打到了drawable下，这是不行的，要放到assets下。
+
+解决办法是 
+另外，release版本只能使用uri加载资源，android把tpl.html文件放在android/app/src/main/assets文件里，使用uri:’file:///android_asset/tpl.html’这个地址加载，ios在项目目录下建个文件夹，把tpl文件放里面去，使用uri:’文件名/tpl’加载。 
+--------------------- 
+
+
+
+
+
+------------------------------------------
+Echarts用的webView然后引入一个文件，而这个文件的路径对于ios来说是没有问题的，但是在安卓来说这个路径就是错误的，那就在安卓里没有这个文件,所以copy一个tpl文件,复制到assets
+const source = (Platform.OS == 'ios') ? require('./tpl.html') : {'uri':'file:///android_asset/tpl.html'}
+    return (
+      <View style={{flex: 1, height: this.props.height || 400,}}>
+        <WebView
+          ref="chart"
+          scrollEnabled = {false}
+          injectedJavaScript = {renderChart(this.props)}
+          style={{
+            height: this.props.height || 400,
+          }}
+          source={source}
+        />
+      </View>
+
